@@ -52,7 +52,7 @@ namespace progmet_assignment1
                 return $"{name},{phone},{email},{address}";
             }
             public void PrintPerson()
-            {
+            {//här kan jag använda private stringsen egentligen right?
                 Console.WriteLine("Name = {0}\nPhone = {1}\nEmail = {2}\nAddress = {3}\n", GetName(), GetPhone(), GetEmail(), GetAddress());
             }
 
@@ -69,7 +69,8 @@ namespace progmet_assignment1
             //saves to this file after quitting program
             string new_file_name = "C:\\Users\\samka\\newaddressbook.txt";
 
-            string[] lines = { };
+            string[] lines;
+
             if (File.Exists(file_name))
             {
                 lines = File.ReadAllLines(file_name);
@@ -77,7 +78,7 @@ namespace progmet_assignment1
             else
             {
                 Console.WriteLine("No input-file found called {0}", file_name);
-                Console.WriteLine("press any key to exit");
+                Console.WriteLine("\nPress any key to exit");
                 Console.ReadKey();
                 return;
             }
@@ -100,7 +101,7 @@ namespace progmet_assignment1
                 if (usrInpt == "0")
                     break;
 
-                if (usrInpt == "1")
+                if (usrInpt == "1")//show menu
                 {
                     Console.Clear();
                     foreach (Person P in addressbook)
@@ -110,7 +111,27 @@ namespace progmet_assignment1
                     Console.ReadKey();
                 }
 
+                if ( usrInpt == "2") //add person
+                {
+                    string[] personString = new string[4];
+                    Console.Clear();
+                    Console.WriteLine("To add a new person, enter information below.");
+                    Console.Write("Name: ");
+                    personString[0] = Console.ReadLine();
+                    Console.Write("Phone: ");
+                    personString[1] = Console.ReadLine();
+                    Console.Write("Email: ");
+                    personString[2] = Console.ReadLine();
+                    Console.Write("Address: ");
+                    personString[3] = Console.ReadLine();
 
+                    addressbook.Add(new Person(personString));
+
+                    Console.WriteLine("You have now added {0} to this addressbook!",personString[0]);
+
+                    Console.WriteLine("Press any key to go back to menu.");
+                    Console.ReadKey();
+                }
                 
             }
 
@@ -120,7 +141,7 @@ namespace progmet_assignment1
             SaveToFile(new_file_name ,addressbook);
             Console.WriteLine("Saved info to new file. ({0})",new_file_name);
 
-            Console.WriteLine("press any key to exit");
+            Console.WriteLine("\nPress any key to exit");
             Console.ReadKey();
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace progmet_assignment1
@@ -60,16 +61,14 @@ namespace progmet_assignment1
             string file_name = "C:\\Users\\samka\\source\\repos\\addressbook.txt";
             
             string[] lines = File.ReadAllLines(file_name);
+            
+            List<Person> addressbook = new List<Person>();
 
-            Person[] addressbook = new Person[lines.Length];
-
-            int i = 0;
             foreach (string line in lines)
             {
                 //always has 4 strings (depending on input file??)
                 string[] personStrings = line.Split(',');
-                addressbook[i++] = new Person(personStrings);
-                //addressbook[i++] = new Person(person[0], person[1], person[2], person[3]);
+                addressbook.Add(new Person(personStrings));
             }
 
             foreach (Person P in addressbook)
@@ -85,7 +84,7 @@ namespace progmet_assignment1
             Console.ReadKey();
         }
 
-        static void SaveToFile(Person[] a)
+        static void SaveToFile(List<Person> a)
         {
             //open file/create file/overwrite
 

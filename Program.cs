@@ -45,10 +45,13 @@ namespace progmet_assignment1
             {
                 return address;
             }
-            //
+            public string GetPersonString()
+            {
+                return $"{name}, {phone}, {email}, {address}";
+            }
             public void PrintPerson()
             {
-                Console.WriteLine("name = {0}, phone = {1}, email = {2}, address = {3}", GetName(), GetPhone(), GetEmail(), GetAddress());
+                Console.WriteLine("Name = {0}\nPhone = {1}\nEmail = {2}\nAddress = {3}\n", GetName(), GetPhone(), GetEmail(), GetAddress());
             }
 
             
@@ -57,11 +60,19 @@ namespace progmet_assignment1
 
         static void Main(string[] args)
         {
-            //reads from file
-            string file_name = "C:\\Users\\samka\\source\\repos\\addressbook.txt";
-            
-            string[] lines = File.ReadAllLines(file_name);
-            
+            //reads from file (du får byta till tomki :) )
+            string file_name = "C:\\Users\\samka\\addressbook.txt";
+
+            string[] lines = { };
+            if (File.Exists(file_name))
+            {
+                lines = File.ReadAllLines(file_name);
+            }
+            else
+            {
+                Console.WriteLine("No file found called {0}",file_name);
+            }
+
             List<Person> addressbook = new List<Person>();
 
             foreach (string line in lines)
@@ -74,23 +85,35 @@ namespace progmet_assignment1
             foreach (Person P in addressbook)
                 P.PrintPerson();
 
+
+
+
+
             //print/svae to new file
             SaveToFile(addressbook);
 
-
-
-
-
+            Console.WriteLine("press any key to exit");
             Console.ReadKey();
         }
 
         static void SaveToFile(List<Person> a)
         {
+            string new_file_name = "C:\\Users\\samka\\newaddressbook.txt";
             //open file/create file/overwrite
-
+            if (!File.Exists(new_file_name))
+            {
+                using FileStream fs = File.Create(new_file_name);
+                
+            }
+            //overwrite
+            File.WriteAllText(new_file_name, "");
             //write to file
+            foreach (Person P in a)
+            {
+                File.AppendAllText(new_file_name, $"{P.GetPersonString()}\n");
+            }
 
-                //loop thorugh Person[] a;
+            //loop thorugh Person[] a;
 
             //close file
         }

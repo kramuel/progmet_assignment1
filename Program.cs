@@ -29,7 +29,7 @@ namespace progmet_assignment1
                 phone = s[1];
                 email = s[2];
                 address = s[3];
-                
+
             }
             public string GetName()
             {
@@ -56,7 +56,7 @@ namespace progmet_assignment1
                 Console.WriteLine("Name = {0}\nPhone = {1}\nEmail = {2}\nAddress = {3}\n", GetName(), GetPhone(), GetEmail(), GetAddress());
             }
 
-            
+
         }
 
 
@@ -90,7 +90,7 @@ namespace progmet_assignment1
                 addressbook.Add(new Person(personStrings));
             }
 
-            
+
 
             while (true)
             {
@@ -111,35 +111,62 @@ namespace progmet_assignment1
                     Console.ReadKey();
                 }
 
-                if ( usrInpt == "2") //add person
+                if (usrInpt == "2") //add person
                 {
-                    string[] personString = new string[4];
+                    string[] newPerson = new string[4];
                     Console.Clear();
                     Console.WriteLine("To add a new person, enter information below.");
-                    Console.Write("Name: ");
-                    personString[0] = Console.ReadLine();
-                    Console.Write("Phone: ");
-                    personString[1] = Console.ReadLine();
-                    Console.Write("Email: ");
-                    personString[2] = Console.ReadLine();
-                    Console.Write("Address: ");
-                    personString[3] = Console.ReadLine();
+                    Console.Write("Name(Namn N): ");
+                    newPerson[0] = Console.ReadLine();
+                    Console.Write("Phone(012345*****): ");
+                    newPerson[1] = Console.ReadLine();
+                    Console.Write("Email(abcd@defg.ikj): ");
+                    newPerson[2] = Console.ReadLine();
+                    Console.Write("Address(***vägen 1): ");
+                    newPerson[3] = Console.ReadLine();
 
-                    addressbook.Add(new Person(personString));
+                    addressbook.Add(new Person(newPerson));
 
-                    Console.WriteLine("You have now added {0} to this addressbook!",personString[0]);
+                    Console.WriteLine("You have now added {0} to this addressbook!", newPerson[0]);
 
                     Console.WriteLine("Press any key to go back to menu.");
                     Console.ReadKey();
                 }
-                
+
+                if (usrInpt == "3")//remove person
+                {
+                    Console.Clear();
+                    Console.WriteLine("To remove a person from the addressbook enter name below.");
+                    Console.Write("Name(Namn N): ");
+                    string remName = Console.ReadLine();
+                    //om två har exakt samma namn == RIP 
+                    int remIndex = -1;
+                    for (int i = 0; i < addressbook.Count; i++)
+                    {
+                        if (addressbook[i].GetName() == remName)
+                        {
+                            remIndex = i;
+                        }
+                    }
+                    if (remIndex == -1)
+                    {
+                        Console.WriteLine("No Person was found with that name.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("You have now removed {0} from this addressbook!", addressbook[remIndex].GetName());
+                        addressbook.RemoveAt(remIndex);
+                    }
+
+                    Console.WriteLine("Press any key to go back to menu.");
+                    Console.ReadKey();
+                }
+
             }
 
-
-
             //print/save to new file
-            SaveToFile(new_file_name ,addressbook);
-            Console.WriteLine("Saved info to new file. ({0})",new_file_name);
+            SaveToFile(new_file_name, addressbook);
+            Console.WriteLine("Saved info to new file. ({0})", new_file_name);
 
             Console.WriteLine("\nPress any key to exit");
             Console.ReadKey();
@@ -159,7 +186,7 @@ namespace progmet_assignment1
             Console.Write("Enter choice: ");
             string userInput = Console.ReadLine();
 
-            while ( true )
+            while (true)
             {
                 if (userInput == "1" || userInput == "2" || userInput == "3" || userInput == "0")
                 {
@@ -174,23 +201,21 @@ namespace progmet_assignment1
         }
         static void SaveToFile(string new_file_name, List<Person> a)
         {
-            
-            //open file/create file/overwrite
 
+            //open file/create file/overwrite
             FileStream fs = File.Create(new_file_name);
             //FileStream fs = new FileStream(new_file_name,FileMode.Create); är det någon skillnad?
 
-            //write to file
+            //loop thorugh Person[] a;
             foreach (Person P in a)
             {
+                //write to file
                 fs.Write(Encoding.UTF8.GetBytes($"{P.GetPersonString()}\n"));
-                //File.AppendAllText(new_file_name, $"{P.GetPersonString()}\n");
             }
-            fs.Close();
-
-            //loop thorugh Person[] a;
 
             //close file
+            fs.Close();
+            
         }
     }
 }
